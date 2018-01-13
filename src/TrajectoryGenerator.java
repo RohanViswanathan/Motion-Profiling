@@ -1,9 +1,11 @@
-import java.awt.*;
-
 public class TrajectoryGenerator {
-    private double acc;
-    private double maxVel;
-    private double dt;
+    private double acc = 12;
+    private double maxVel = 12; //physical limitations of robot
+    private double cruiseVel = maxVel; //velocity that is set
+    private double dt = 0.005;
+
+    public double accelDistance, decelDistance, cruiseDistance;
+
     public TrajectoryGenerator(double acc, double maxVel, double dt){
         this.acc = acc;
         this.maxVel = maxVel;
@@ -11,36 +13,37 @@ public class TrajectoryGenerator {
     }
 
     public Trajectory generateTrajectory(double startVel, double endVel, double distance){
-        double accelTime = (maxVel - startVel)/acc;
-        double decelTime = (maxVel - endVel)/acc;
-        double accelDistance = startVel * accelTime + (1/2 * acc * Math.pow(accelTime, 2));
-        double decelDistance = endVel * decelTime + (1/2 * acc * Math.pow(decelTime, 2));
-        double cruiseDistance = distance - accelDistance - decelDistance;
-        double cruiseTime = cruiseDistance/maxVel;
+        cruiseVel = Math.min(Math.sqrt(Math.pow(startVel, 2) + 2*acc*(distance/2)), maxVel);
+        double accelTime = (cruiseVel - startVel)/acc;
+        double decelTime = (cruiseVel - endVel)/acc;
+        accelDistance = startVel * accelTime + (0.5 * acc * Math.pow(accelTime, 2));
+        decelDistance = cruiseVel * decelTime - (0.5 * acc * Math.pow(decelTime, 2));
+        cruiseDistance = distance - accelDistance - decelDistance;
+        double cruiseTime = cruiseDistance/ cruiseVel;
         double totalTime = accelTime + decelTime + cruiseTime;
         int size = (int)(totalTime/dt);
         Trajectory trajectory = new Trajectory(size);
         double currTime = 0;
         for (int i = 0; i < size; i++){
             double currPos, currVel, currAccel;
-            if (currTime < accelTime){
+            if (currTime <= accelTime){
                 currPos = startVel * currTime + (0.5 * acc * Math.pow(currTime, 2));
                 currVel = startVel + (acc * currTime);
                 currAccel = acc;
             }
 
-            else if (currTime > accelTime && currTime < totalTime - decelTime){
-                currPos = accelDistance + maxVel * (currTime - accelTime);
-                currVel = maxVel;
+            else if (currTime > accelTime && currTime < (accelTime + cruiseTime)){
+                currPos = accelDistance + (cruiseVel * (currTime - accelTime));
+                currVel = cruiseVel;
                 currAccel = 0;
             }
 
             else {
-                double tempCurrTime = currTime - (totalTime - decelTime);
+                double tempCurrTime = currTime - (accelTime + cruiseTime);
                 double adjustedCurrTime = totalTime - accelTime - cruiseTime - tempCurrTime;
                 double adjustedCurrPos = (0.5 * acc * Math.pow(adjustedCurrTime, 2));
                 currPos = distance - adjustedCurrPos;
-                currVel = maxVel - (acc * tempCurrTime);
+                currVel = cruiseVel - (acc * tempCurrTime);
                 currAccel = -acc;
             }
 
@@ -50,5 +53,14 @@ public class TrajectoryGenerator {
         }
 
         return trajectory;
+    }
+
+    public static void main (String [] args){
+        TrajectoryGenerator trajectoryGenerator = new TrajectoryGenerator(12, 12, 0.005);
+        System.out.println(trajectoryGenerator.generateTrajectory(1, 0, 2));
+        System.out.println("Accel Dist " + trajectoryGenerator.accelDistance);
+        System.out.println("Decel Dist " + trajectoryGenerator.decelDistance);
+        System.out.println("Cruise Dist " + trajectoryGenerator.cruiseDistance);
+        System.out.println("Cruise Vel " + trajectoryGenerator.cruiseVel);
     }
 }

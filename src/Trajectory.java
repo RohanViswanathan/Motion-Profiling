@@ -6,6 +6,7 @@ public class Trajectory {
         private double vel;
         private double acc;
         private double time;
+
         public Point(double pos, double vel, double acc, double time){
             this.pos = pos;
             this.vel = vel;
@@ -43,9 +44,9 @@ public class Trajectory {
     @Override
     public String toString(){
         String rv = "";
-        rv += "Pos, Vel, Acc, Time\n";
+        rv += "Pos,Time\n";
         for(Point p : points){
-            rv += p.pos + "," + p.vel + "," + p.acc + "," + p.time + "\n";
+            rv += p.pos + "," + p.time + "\n";
         }
         return rv;
     }
