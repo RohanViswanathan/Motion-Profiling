@@ -44,9 +44,9 @@ public class Trajectory {
     @Override
     public String toString(){
         String rv = "";
-        rv += "Pos,Time\n";
+        rv += "Vel,Time\n";
         for(Point p : points){
-            rv += p.pos + "," + p.time + "\n";
+            rv += p.vel + "," + p.time + "\n";
         }
         return rv;
     }
