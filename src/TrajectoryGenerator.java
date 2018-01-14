@@ -18,7 +18,10 @@ public class TrajectoryGenerator {
         double decelTime = (cruiseVel - endVel)/acc;
         accelDistance = startVel * accelTime + (0.5 * acc * Math.pow(accelTime, 2));
         decelDistance = cruiseVel * decelTime - (0.5 * acc * Math.pow(decelTime, 2));
-        cruiseDistance = distance - accelDistance - decelDistance; // accel + decel should always be <= distance
+        cruiseDistance = distance - accelDistance - decelDistance;
+        if (cruiseDistance < 0){
+            return new Trajectory(0);
+        }
         double cruiseTime = cruiseDistance/ cruiseVel;
         double totalTime = accelTime + decelTime + cruiseTime;
         int size = (int)(totalTime/dt);
@@ -59,7 +62,7 @@ public class TrajectoryGenerator {
 
     public static void main (String [] args){
         TrajectoryGenerator trajectoryGenerator = new TrajectoryGenerator(12, 12, 0.005);
-        System.out.println(trajectoryGenerator.generateTrajectory(4, 2, 4));
+        System.out.println(trajectoryGenerator.generateTrajectory(4, 4, 1));
         System.out.println("Accel Dist " + trajectoryGenerator.accelDistance);
         System.out.println("Decel Dist " + trajectoryGenerator.decelDistance);
         System.out.println("Cruise Dist " + trajectoryGenerator.cruiseDistance);
