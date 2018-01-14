@@ -31,7 +31,7 @@ public class TrajectoryCurveGenerator {
 
     public static void main (String [] args){
         TrajectoryCurveGenerator trajectoryCurveGenerator = new TrajectoryCurveGenerator(12, 12, 0.005);
-        trajectoryCurveGenerator.generateTrajectoryCurve(2, 0, 90, 3);
+        trajectoryCurveGenerator.generateTrajectoryCurve(2, 2, 90, 4);
         System.out.println(trajectoryCurveGenerator.getLeadPath());
     }
 
