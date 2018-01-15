@@ -145,6 +145,6 @@ public class Translation {
     @Override
     public String toString() {
         final DecimalFormat format = new DecimalFormat("#0.000");
-        return "(" + format.format(x) + "," + format.format(y) + ")";
+        return format.format(x) + "," + format.format(y);
     }
 }

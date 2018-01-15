@@ -155,6 +155,6 @@ public class RigidTransform {
 
     @Override
     public String toString(){
-        return "T:" + translation.toString() + ", R:" + rotation.toString();
+        return translation.toString();
     }
 }

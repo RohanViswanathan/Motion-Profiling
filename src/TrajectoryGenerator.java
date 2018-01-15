@@ -49,10 +49,10 @@ public class TrajectoryGenerator {
                 currPos = distance - adjustedCurrPos;
                 currVel = cruiseVel + (currAccel * tempCurrTime);
             }
+            currTime += dt;
 
             Trajectory.Point point = new Trajectory.Point(currPos, currVel, currAccel, currTime);
             trajectory.addPoint(i, point);
-            currTime += dt;
         }
 
         return trajectory;
@@ -60,7 +60,7 @@ public class TrajectoryGenerator {
 
     /*public Trajectory generateScaledTrajectory(){
 
-    } */
+    }*/
 
     public static void main (String [] args){
         TrajectoryGenerator trajectoryGenerator = new TrajectoryGenerator(12, 12, 0.005);
