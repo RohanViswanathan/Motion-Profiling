@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
 public class Trajectory {
+
+
     public static class Point {
         private double pos;
         private double vel;
@@ -30,23 +32,24 @@ public class Trajectory {
             return time;
         }
     }
-    ArrayList<Point> points;
+    public ArrayList<Point> points;
 
     public Trajectory(int size){
         points = new ArrayList<Point>(size);
     }
 
     public void addPoint(int index, Point point){
-
         points.add(index, point);
     }
+
+
 
     @Override
     public String toString(){
         String rv = "";
-        rv += "Vel,Time\n";
+        rv += "Pos,Time\n";
         for(Point p : points){
-            rv += p.vel + "," + p.time + "\n";
+            rv += p.pos + "," + p.time + "\n";
         }
         return rv;
     }

@@ -15,7 +15,7 @@ public class TrajectoryGenerator {
     public Trajectory generateTrajectory(double startVel, double endVel, double distance){
         cruiseVel = Math.min(Math.sqrt((distance * acc) + ((Math.pow(startVel, 2) + Math.pow(endVel, 2))/2)), maxVel);
         double accelTime = (cruiseVel - startVel)/acc;
-        double decelTime = (cruiseVel - endVel)/acc;
+        double decelTime = Math.abs(cruiseVel - endVel)/acc;
         accelDistance = startVel * accelTime + (0.5 * acc * Math.pow(accelTime, 2));
         decelDistance = cruiseVel * decelTime - (0.5 * acc * Math.pow(decelTime, 2));
         cruiseDistance = distance - accelDistance - decelDistance;
@@ -29,9 +29,9 @@ public class TrajectoryGenerator {
         for (int i = 0; i < size; i++){
             double currPos, currVel, currAccel;
             if (currTime <= accelTime){
-                currPos = startVel * currTime + (0.5 * acc * Math.pow(currTime, 2));
-                currVel = startVel + (acc * currTime);
                 currAccel = acc;
+                currPos = startVel * currTime + (0.5 * acc * Math.pow(currTime, 2));
+                currVel = startVel + (currAccel * currTime);
             }
 
             else if (currTime > accelTime && currTime < (accelTime + cruiseTime)){
@@ -44,10 +44,10 @@ public class TrajectoryGenerator {
             else {
                 double tempCurrTime = currTime - (accelTime + cruiseTime);
                 double adjustedCurrTime = totalTime - accelTime - cruiseTime - tempCurrTime;
-                double adjustedCurrPos = (0.5 * acc * Math.pow(adjustedCurrTime, 2));
-                currPos = distance - adjustedCurrPos;
-                currVel = cruiseVel - (acc * tempCurrTime);
+                double adjustedCurrPos = endVel * adjustedCurrTime + 0.5 * acc * Math.pow(adjustedCurrTime, 2);
                 currAccel = -acc;
+                currPos = distance - adjustedCurrPos;
+                currVel = cruiseVel + (currAccel * tempCurrTime);
             }
 
             Trajectory.Point point = new Trajectory.Point(currPos, currVel, currAccel, currTime);
@@ -58,9 +58,13 @@ public class TrajectoryGenerator {
         return trajectory;
     }
 
+    /*public Trajectory generateScaledTrajectory(){
+
+    } */
+
     public static void main (String [] args){
         TrajectoryGenerator trajectoryGenerator = new TrajectoryGenerator(12, 12, 0.005);
-        System.out.println(trajectoryGenerator.generateTrajectory(10, 0, 5));
+        System.out.println(trajectoryGenerator.generateTrajectory(4, 4, 100));
         System.out.println("Accel Dist " + trajectoryGenerator.accelDistance);
         System.out.println("Decel Dist " + trajectoryGenerator.decelDistance);
         System.out.println("Cruise Dist " + trajectoryGenerator.cruiseDistance);
