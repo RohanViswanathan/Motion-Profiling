@@ -1,6 +1,6 @@
-import java.text.DecimalFormat;
+package math;
 
-        import java.text.DecimalFormat;
+import java.text.DecimalFormat;
 
 /**
  * Class representing a differential transformation (translation + rotation)

@@ -1,3 +1,5 @@
+package math;
+
 import java.text.DecimalFormat;
 /**
  * Class representing a 2D translation vector.

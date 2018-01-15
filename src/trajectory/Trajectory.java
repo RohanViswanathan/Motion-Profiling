@@ -1,3 +1,5 @@
+package trajectory;
+
 import java.util.ArrayList;
 
 public class Trajectory {
@@ -41,8 +43,6 @@ public class Trajectory {
     public void addPoint(int index, Point point){
         points.add(index, point);
     }
-
-
 
     @Override
     public String toString(){

@@ -1,3 +1,7 @@
+package subsystems;
+
+import math.RigidTransform;
+import math.Twist;
 
 /**
  * Kinematic functions for a differential drive robot
@@ -25,7 +29,7 @@ public class Kinematics {
     }
 
     public static Twist forwardKinematics(double leftDelta, double rightDelta){
-        double deltaRot = (rightDelta - leftDelta)/2.4; //taken from TrajectoryCurveGenerator
+        double deltaRot = (rightDelta - leftDelta)/2.4; //taken from trajectory.TrajectoryCurveGenerator
         return forwardKinematics(leftDelta, rightDelta, deltaRot);
     }
 

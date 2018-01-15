@@ -1,3 +1,4 @@
+package math;
 
 /**
  * Class representing a 2d Rigid-Body Homogeneous Transformation Matrix
@@ -59,14 +60,14 @@ public class RigidTransform {
      * Basically this converts a {@link Twist} ---(exponential map)---> transformation
      * Kind of like an differential position ---(integral)---> position
      *
-     * Twist: [[dx]
+     * math.Twist: [[dx]
      *         [dy]
      *         [dtheta]]
      *
-     * Rotation: [[cos(dtheta), -sin(dtheta)]
+     * math.Rotation: [[cos(dtheta), -sin(dtheta)]
      *            [sin(dtheta),  cos(dtheta)]]
      *
-     * Translation: [[sin(dtheta)/dtheta,      -(1-cos(dtheta)/detheta)]  * [[dx]
+     * math.Translation: [[sin(dtheta)/dtheta,      -(1-cos(dtheta)/detheta)]  * [[dx]
      *               [(1-cos(dtheta)/dtheta),  sin(dtheta)/dtheta)     ]]    [dy]]
      *
      * @param twist Input twist

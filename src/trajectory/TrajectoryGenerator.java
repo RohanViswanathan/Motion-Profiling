@@ -1,3 +1,5 @@
+package trajectory;
+
 public class TrajectoryGenerator {
     private double acc = 12;
     private double maxVel = 12; //physical limitations of robot
@@ -58,9 +60,18 @@ public class TrajectoryGenerator {
         return trajectory;
     }
 
-    /*public Trajectory generateScaledTrajectory(){
+    public Trajectory generateScaledTrajectory(Trajectory leadTrajectory, double scale){
+        Trajectory followTrajectory = new Trajectory(leadTrajectory.points.size());
+        for (int i = 0; i < leadTrajectory.points.size(); i++){
+            Trajectory.Point leadPoint = leadTrajectory.points.get(i);
+            double followPosition = scale * leadPoint.getPos();
+            double followVel = scale * leadPoint.getVel();
+            Trajectory.Point followPoint = new Trajectory.Point(followPosition, followVel, leadPoint.getAcc(), leadPoint.getTime());
+            followTrajectory.addPoint(i, followPoint);
+        }
 
-    }*/
+        return followTrajectory;
+    }
 
     public static void main (String [] args){
         TrajectoryGenerator trajectoryGenerator = new TrajectoryGenerator(12, 12, 0.005);
